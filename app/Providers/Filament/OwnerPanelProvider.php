@@ -34,9 +34,9 @@ class OwnerPanelProvider extends PanelProvider
                 return Auth::check() ? Auth::user()->organization->name : 'Admin Panel'; // Use Auth facade to check user authentication
             })
             ->brandLogo(function () {
-                return Auth::check() ? asset('storage/' . Auth::user()->organization->logo) : asset('images/logo.png'); // Use Auth facade to check user authentication
+                return Auth::check() ? Auth::user()->organzation : asset('images/logo.png'); // Use Auth facade to check user authentication
             })
-            ->brandLogoHeight('5rem')
+            ->brandLogoHeight('6rem')
             ->colors([
                 'primary' => Color::Purple,
             ])

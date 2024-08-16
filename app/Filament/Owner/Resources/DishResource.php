@@ -25,7 +25,7 @@ class DishResource extends Resource
 {
     protected static ?string $model = Dish::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cake';
 
     protected static ?int $navigationSort = 5;
 
