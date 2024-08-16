@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('inventory_id')->constrained('inventories')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('organization_id')->constrained('organizations')->onDelete('cascade');
-            $table->enum('source', ['purchase' . 'store', 'kitchen', 'sold']);
+            $table->enum('source', ['purchase', 'store', 'kitchen', 'sold']);
             $table->enum('destination', ['store', 'kitchen', 'sold']);
             $table->decimal('quantity', 10, 2);
             $table->integer('price')->nullable();

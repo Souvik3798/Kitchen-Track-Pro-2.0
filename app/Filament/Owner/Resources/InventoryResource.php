@@ -32,9 +32,12 @@ class InventoryResource extends Resource
                     ->label('Item name')
                     ->placeholder('Eg: Chicken, Mutton, Milk, Chilli Powder')
                     ->required(),
-                Forms\Components\TextInput::make('unit')
+                Forms\Components\Select::make('unit')
                     ->label('Unit')
-                    ->placeholder('Nos./ml/gm/Kg')
+                    ->options([
+                        'kg' => 'Kg',
+                        'Litre' => 'Litre'
+                    ])
                     ->required(),
                 Hidden::make('organization_id')
                     ->default(auth()->user()->organization_id),
