@@ -76,7 +76,7 @@ class Order extends Model
                         'source' => 'kitchen',
                         'destination' => 'sold',
                         'quantity' => $amountToDeduct,
-                        'price' => $dish->price
+                        'price' => $orderDishPivot->price
                     ]);
                 }
             }
