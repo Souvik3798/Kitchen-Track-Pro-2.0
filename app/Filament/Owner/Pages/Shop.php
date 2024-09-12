@@ -163,23 +163,13 @@ class Shop extends Page
         return $shopstock->quantity;
     }
 
-    public static function canViewAny(): bool
+    public static function canView(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
+        return auth()->check() && in_array(auth()->user()->role, ['owner', 'store_keeper']);
     }
 
-    public static function canCreate(): bool
+    protected function getHeaderActions(): array
     {
-        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
+        return [];
     }
 }
