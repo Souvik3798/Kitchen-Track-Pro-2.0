@@ -31,6 +31,6 @@ class Cart extends Model
     //relation with shopstock
     public function shopstock()
     {
-        return $this->belongsTo(Shopstock::class, 'shopstock_id');
+        return $this->belongsTo(ShopStock::class, 'shopstock_id');
     }
 }
