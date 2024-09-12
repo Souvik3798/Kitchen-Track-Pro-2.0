@@ -163,13 +163,8 @@ class Shop extends Page
         return $shopstock->quantity;
     }
 
-    public static function canView(): bool
+    public static function canAccess(): bool
     {
-        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
-    }
-
-    protected function getHeaderActions(): array
-    {
-        return [];
+        return Auth::check() && (Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper');
     }
 }
