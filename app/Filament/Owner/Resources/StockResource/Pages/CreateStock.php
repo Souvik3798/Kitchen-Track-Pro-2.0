@@ -32,6 +32,7 @@ class CreateStock extends CreateRecord
                 $done = $existingStock->update([
                     'store_quantity' => $existingStock->store_quantity + $stockData['store_quantity'],
                     'price' => ($stockData['price'] != 0) ? $stockData['price'] : $existingStock->price,
+                    'user_id' => auth()->id(),
 
                 ]);
 
