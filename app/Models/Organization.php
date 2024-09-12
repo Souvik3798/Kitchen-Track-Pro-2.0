@@ -9,16 +9,11 @@ class Organization extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'address', 'contact_number', 'email', 'logo', 'gst', 'pan', 'signature'];
+    protected $fillable = ['name', 'address', 'contact_number', 'email', 'logo', 'gst', 'type', 'pan', 'signature'];
 
     public function inventories()
     {
         return $this->hasMany(Inventory::class);
-    }
-
-    public function suppliers()
-    {
-        return $this->hasMany(Supplier::class);
     }
 
     public function stocks()
@@ -39,5 +34,10 @@ class Organization extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function shopstock()
+    {
+        return $this->hasMany(ShopStock::class);
     }
 }

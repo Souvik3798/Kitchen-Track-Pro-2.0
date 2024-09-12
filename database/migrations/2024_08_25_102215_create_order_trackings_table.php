@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('suppliers', function (Blueprint $table) {
+        Schema::create('order_trackings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('contact_info')->nullable();
-            $table->foreignId('organization_id')->constrained('organizations')->onDelete('cascade');
+            $table->foreignId('order_id')->constrained('shop_orders')->onDelete('cascade');
+            $table->enum('status', ['accepted', 'rejected', 'shipped', 'cancelled', 'pending', 'completed'])->default('pending');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('suppliers');
+        Schema::dropIfExists('order_trackings');
     }
 };

@@ -12,6 +12,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
@@ -28,9 +29,12 @@ class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-currency-rupee';
+    protected static ?string $navigationIcon = 'heroicon-s-document-currency-rupee';
+
+    protected static ?string $modelLabel = 'Sales Order';
 
     protected static ?int $navigationSort = 6;
+
 
     public static function form(Form $form): Form
     {
@@ -62,16 +66,33 @@ class OrderResource extends Resource
 
                 Fieldset::make('Order Details')
                     ->schema([
-                        Forms\Components\Select::make('status')
+                        ToggleButtons::make('status')
                             ->label('Status')
                             ->options([
-                                'pending' => '<span class="text-orange-500">Pending</span>',
-                                'in_progress' => '<span class="text-yellow-500">In Progress</span>',
-                                'ready' => '<span class="text-yellow-700">Ready</span>',
-                                'delivered' => '<span class="text-green-500">Delivered</span>',
-                                'cancelled' => '<span class="text-red-500">Cancelled</span>',
+                                'pending' => 'New',
+                                'in_progress' => 'In Process',
+                                'ready' => 'Ready',
+                                'delivered' => 'Delivered',
+                                'cancelled' => 'Cancelled',
                             ])
-                            ->allowHtml()
+                            ->colors([
+                                'pending' => 'primary',
+                                'in_progress' => 'info',
+                                'ready' => 'warning',
+                                'delivered' => 'success',
+                                'cancelled' => 'danger',
+
+                            ])
+                            ->icons([
+                                'pending' => 'heroicon-o-clock',
+                                'in_progress' => 'heroicon-o-arrow-path-rounded-square',
+                                'ready' => 'heroicon-o-bolt',
+                                'delivered' => 'heroicon-o-truck',
+                                'cancelled' => 'heroicon-o-x-circle',
+
+                            ])
+                            ->columns(3)
+                            ->gridDirection('row')
                             ->default('pending')
                             ->visibleOn('edit'),
                         Repeater::make('orderdish')
@@ -83,6 +104,8 @@ class OrderResource extends Resource
                             ->schema([
                                 Select::make('dish_id')
                                     ->label('Dish')
+                                    ->searchable()
+                                    ->preload()
                                     ->relationship('dish', 'name')
                                     ->live()
                                     ->after(function (Select $select) {
@@ -140,8 +163,8 @@ class OrderResource extends Resource
                 BadgeColumn::make('status')->sortable()
                     ->getStateUsing(function ($record) {
                         $status = [
-                            'pending' => 'Pending',
-                            'in_progress' => 'In Progress',
+                            'pending' => 'New',
+                            'in_progress' => 'In Process',
                             'ready' => 'Ready',
                             'delivered' => 'Delivered',
                             'cancelled' => 'Cancelled',
@@ -150,9 +173,9 @@ class OrderResource extends Resource
                     })
                     ->color(function ($state) {
                         return match ($state) {
-                            'Pending' => 'warning',
-                            'In Progress' => 'warning',
-                            'Ready' => 'success',
+                            'New' => 'primary',
+                            'In Process' => 'info',
+                            'Ready' => 'warning',
                             'Delivered' => 'success',
                             'Cancelled' => 'danger',
                             default => 'gray',
@@ -167,10 +190,10 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('viewInvoice')
-                    ->label('Invoice')
+                    ->label('Generate Invoice')
                     ->url(fn(Order $record) => route('invoice.generate', $record->id))
                     ->color('success')
-                    ->icon('heroicon-o-document-currency-rupee')
+                    ->icon('heroicon-s-document-currency-rupee')
                     ->openUrlInNewTab(),
             ])
             ->modifyQueryUsing(function ($query) {

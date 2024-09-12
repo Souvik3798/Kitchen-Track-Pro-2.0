@@ -138,6 +138,14 @@
             background-color: #ff9800;
         }
 
+        .status-chip.purple {
+            background-color: #9900ff;
+        }
+
+        .status-chip.blue {
+            background-color: #008cff;
+        }
+
         .signature-section {
             text-align: right;
             margin-top: 40px;
@@ -285,8 +293,8 @@
                 <p><strong>PAN:</strong> <b>{{ auth()->user()->organization->pan }}</b></p>
                 <p style="margin-top: 60px">Status:
                     <span
-                        class="status-chip {{ $order->status === 'delivered' ? 'green' : ($order->status === 'cancelled' ? 'red' : 'orange') }}">
-                        {{ ucfirst($order->status) }}
+                        class="status-chip {{ $order->status === 'delivered' ? 'green' : ($order->status === 'cancelled' ? 'red' : ($order->status === 'in_progress' ? 'blue' : 'purple')) }}">
+                        {{ ucwords(str_replace('_', ' ', $order->status)) }}
                     </span>
                 </p>
 

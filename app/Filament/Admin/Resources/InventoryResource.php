@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Owner\Resources;
+namespace App\Filament\Admin\Resources;
 
-use App\Filament\Owner\Resources\InventoryResource\Pages;
+use App\Filament\Admin\Resources\InventoryResource\Pages;
 use App\Filament\Owner\Resources\InventoryResource\RelationManagers;
 use App\Models\Inventory;
 use Filament\Forms;
@@ -52,9 +52,15 @@ class InventoryResource extends Resource
 
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        return strtoupper($state);
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('unit')
                     ->sortable()
+                    ->formatStateUsing(function ($state) {
+                        return strtoupper($state);
+                    })
                     ->searchable(),
             ])
             ->defaultSort('created_at', 'desc')
@@ -64,12 +70,6 @@ class InventoryResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->modifyQueryUsing(function ($query) {
-                return $query->where('organization_id', auth()->user()->organization_id);
-            })
-            ->modifyQueryUsing(function ($query) {
-                return $query->where('organization_id', auth()->user()->organization_id);
-            })
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -91,25 +91,5 @@ class InventoryResource extends Resource
             'create' => Pages\CreateInventory::route('/create'),
             'edit' => Pages\EditInventory::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return Auth::check() && Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
-    }
-
-    public static function canCreate(): bool
-    {
-        return Auth::check() && Auth::user()->role === 'owner'  || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
-    }
-
-    public static function canEdit(Model $record): bool
-    {
-        return Auth::check() && Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
-    }
-
-    public static function canDelete(Model $record): bool
-    {
-        return Auth::check() && Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
     }
 }

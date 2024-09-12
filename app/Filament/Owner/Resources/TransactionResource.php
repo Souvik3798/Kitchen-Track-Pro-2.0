@@ -4,8 +4,10 @@ namespace App\Filament\Owner\Resources;
 
 use App\Filament\Owner\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +16,7 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-s-document-text';
     protected static ?string $modelLabel = 'Logs';
 
     public static function table(Table $table): Table
@@ -27,6 +29,10 @@ class TransactionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('User')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('supplier.name')
+                    ->label('Supplier')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\BadgeColumn::make('source')
@@ -59,11 +65,19 @@ class TransactionResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Quantity')
-                    ->suffix(' Nos.')
+                    ->suffix(function ($record) {
+                        // Access the related inventory unit directly
+                        $inventory = $record->inventory;
+                        return $inventory ? ' ' . $inventory->unit : '';
+                    })
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('price')
+                Tables\Columns\TextColumn::make('Cost')
                     ->label('Price')
+                    ->default(function ($record) {
+                        $price = $record->price * $record->quantity;
+                        return number_format($price, 2);
+                    })
                     ->prefix('₹.')
                     ->searchable()
                     ->sortable(),

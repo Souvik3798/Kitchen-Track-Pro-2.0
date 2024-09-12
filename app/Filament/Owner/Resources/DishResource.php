@@ -25,7 +25,7 @@ class DishResource extends Resource
 {
     protected static ?string $model = Dish::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cake';
+    protected static ?string $navigationIcon = 'heroicon-s-cake';
 
     protected static ?int $navigationSort = 5;
 
@@ -54,11 +54,10 @@ class DishResource extends Resource
                         Select::make('inventory_id')
                             ->label('Select Ingredient')
                             ->options(function () {
-                                return \App\Models\Inventory::whereHas('stocks', function ($query) {
-                                    $query->where('organization_id', auth()->user()->organization_id)
-                                        ->where('store_quantity', '>', 0); // Ensure the ingredient is in stock
-                                })->pluck('name', 'id');
+                                return \App\Models\Inventory::whereHas('stocks')->pluck('name', 'id');
                             })
+                            ->searchable()
+                            ->preload()
                             ->reactive()
                             ->afterStateUpdated(function ($state, callable $set) {
                                 // Retrieve the unit and set the display unit accordingly

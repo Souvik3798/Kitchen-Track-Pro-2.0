@@ -28,6 +28,6 @@ class Transaction extends Model
 
     public function supplier()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Organization::class, 'supplier_id');
     }
 }

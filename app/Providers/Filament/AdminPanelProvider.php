@@ -31,12 +31,12 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label('Organization Dashboard')
-                    ->icon('heroicon-o-cog-6-tooth')
-                    ->url('/owner')
-            ])
+            // ->userMenuItems([
+            //     MenuItem::make()
+            //         ->label('Organization Dashboard')
+            //         ->icon('heroicon-o-cog-6-tooth')
+            //         ->url('/owner')
+            // ])
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([

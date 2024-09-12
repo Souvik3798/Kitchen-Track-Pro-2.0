@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Owner\Resources\SupplierResource\Pages;
+namespace App\Filament\Admin\Resources\InventoryResource\Pages;
 
-use App\Filament\Owner\Resources\SupplierResource;
+use App\Filament\Admin\Resources\InventoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditSupplier extends EditRecord
+class EditInventory extends EditRecord
 {
-    protected static string $resource = SupplierResource::class;
+    protected static string $resource = InventoryResource::class;
 
     protected function getHeaderActions(): array
     {

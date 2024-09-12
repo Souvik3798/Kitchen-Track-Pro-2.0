@@ -28,7 +28,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
@@ -51,10 +51,13 @@ class UserResource extends Resource
                         Select::make('organization_id')
                             ->label('Organization')
                             ->options(Organization::all()->pluck('name', 'id'))
+                            ->preload()
+                            ->searchable()
                             ->required(),
                         Select::make('role')
                             ->options([
                                 'admin' => 'Admin',
+                                'shop' => 'Shop',
                                 'owner' => 'Owner',
                                 'store_keeper' => 'Store Keeper',
                                 'hotel_staff' => 'Kitchen Staff',
@@ -95,12 +98,14 @@ class UserResource extends Resource
                             'owner' => 'Owner',
                             'store_keeper' => 'Store Keeper',
                             'hotel_staff' => 'Kitchen Staff',
+                            'shop' => 'Shop'
                         ];
                         return $roles[$record->role] ?? $record->role;
                     })
                     ->color(function ($state) {
                         return match ($state) {
                             'Admin' => 'gray',
+                            'Shop' => 'info',
                             'Owner' => 'success',
                             'Store Keeper' => 'warning',
                             'Kitchen Staff' => 'danger',

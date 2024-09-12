@@ -62,8 +62,13 @@ class Order extends Model
             foreach ($dish->ingredients as $ingredient) {
                 $inventoryStocks = $ingredient->inventory->stocks;
 
-                // Calculate the amount to deduct from kitchen stock
-                $amountToDeduct = $ingredient->quantity * $quantityOrdered / 1000;
+                if ($ingredient->inventory->unit == 'kg' || $ingredient->inventory->unit == 'Litre') {
+                    // Calculate the amount to deduct from kitchen stock
+                    $amountToDeduct = $ingredient->quantity * $quantityOrdered / 1000;
+                } else {
+                    // Calculate the amount to deduct from kitchen stock
+                    $amountToDeduct = $ingredient->quantity * $quantityOrdered;
+                }
 
                 // Update kitchen stock for each stock record
                 foreach ($inventoryStocks as $stock) {
@@ -92,8 +97,14 @@ class Order extends Model
             foreach ($dish->ingredients as $ingredient) {
                 $inventoryItem = $ingredient->inventory->stocks;
 
-                // Calculate the amount to add back to kitchen stock
-                $amountToAdd = $ingredient->quantity * $quantityOrdered / 1000;
+                if ($ingredient->inventory->unit == 'kg' || $ingredient->inventory->unit == 'Litre') {
+                    // Calculate the amount to add back to kitchen stock
+                    $amountToAdd = $ingredient->quantity * $quantityOrdered / 1000;
+                } else {
+                    // Calculate the amount to add back to kitchen stock
+                    $amountToAdd = $ingredient->quantity * $quantityOrdered;
+                }
+
 
                 // Update kitchen stock
                 foreach ($inventoryItem as $stock) {

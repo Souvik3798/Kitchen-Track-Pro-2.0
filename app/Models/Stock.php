@@ -22,13 +22,13 @@ class Stock extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
-
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Organization::class, 'supplier_id');
     }
 }

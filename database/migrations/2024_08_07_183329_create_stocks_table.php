@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('inventory_id')->constrained('inventories')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('set null');
+            $table->foreignId('supplier_id')->nullable()->constrained('organizations')->onDelete('set null');
             $table->foreignId('organization_id')->constrained('organizations')->onDelete('cascade');
             $table->decimal('store_quantity', 10, 2)->default(0);
             $table->decimal('kitchen_quantity', 10, 2)->default(0);

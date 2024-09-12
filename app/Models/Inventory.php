@@ -30,4 +30,9 @@ class Inventory extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function shopstock()
+    {
+        return $this->hasMany(ShopStock::class);
+    }
 }

@@ -2,6 +2,9 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Owner\Widgets\DishWidget;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsShop;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -11,6 +14,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Widgets\StatsOverviewWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -29,6 +33,7 @@ class OwnerPanelProvider extends PanelProvider
             ->path('owner')
             ->login()
             ->profile()
+            ->font('Raleway')
             ->favicon(asset('images/favicon.png'))
             ->brandName(function () {
                 return Auth::check() ? Auth::user()->organization->name : 'Admin Panel'; // Use Auth facade to check user authentication
@@ -56,6 +61,8 @@ class OwnerPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                StatsOverviewWidget::class,
+                DishWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -67,6 +74,8 @@ class OwnerPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                IsShop::class,
+                IsAdmin::class
             ])
             ->authMiddleware([
                 Authenticate::class,

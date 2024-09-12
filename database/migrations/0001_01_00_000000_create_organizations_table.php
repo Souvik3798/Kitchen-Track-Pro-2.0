@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('address')->nullable();
+            $table->enum('type', ['hotel', 'shop', 'admin'])->default('admin');
             $table->string('contact_number')->nullable();
             $table->string('email')->nullable();
             $table->string('logo')->nullable();

@@ -7,10 +7,12 @@ use App\Filament\Admin\Resources\OrganizationResource\RelationManagers;
 use App\Models\Organization;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -21,7 +23,7 @@ class OrganizationResource extends Resource
 {
     protected static ?string $model = Organization::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
 
     public static function form(Form $form): Form
     {
@@ -43,6 +45,12 @@ class OrganizationResource extends Resource
                     ->label('GST Number')
                     ->placeholder('Enter GST Number')
                     ->maxLength(15)
+                    ->required(),
+                Select::make('type')
+                    ->options([
+                        'hotel' => 'Hotel',
+                        'shop' => 'Shop'
+                    ])
                     ->required(),
                 TextInput::make('pan')
                     ->label('PAN Number')
@@ -69,6 +77,19 @@ class OrganizationResource extends Resource
                     ->sortable(),
                 TextColumn::make('contact_number')
                     ->prefix('+91-')
+                    ->searchable()
+                    ->sortable(),
+                BadgeColumn::make('type')
+                    ->color(function ($state) {
+                        return match ($state) {
+                            'hotel' => 'info',
+                            'shop' => 'success',
+                            default => 'gray',
+                        };
+                    })
+                    ->formatStateUsing(function ($state) {
+                        return strtoupper($state);
+                    })
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')

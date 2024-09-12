@@ -3,6 +3,7 @@
 namespace App\Filament\Owner\Resources;
 
 use App\Filament\Owner\Resources\StockResource\Pages;
+use App\Models\Organization;
 use App\Models\Stock;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
@@ -21,7 +22,7 @@ class StockResource extends Resource
 {
     protected static ?string $model = Stock::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
+    protected static ?string $navigationIcon = 'heroicon-s-inbox-stack';
 
     protected static ?int $navigationSort = 4;
 
@@ -30,7 +31,7 @@ class StockResource extends Resource
         return $form
             ->schema([
                 Select::make('supplier_id')
-                    ->relationship('supplier', 'name')
+                    ->relationship('supplier', 'name', fn($query) => $query->where('type', 'shop')) // Relationship to the supplier model
                     ->required(),
                 Hidden::make('organization_id')
                     ->default(auth()->user()->organization_id),
@@ -40,11 +41,11 @@ class StockResource extends Resource
                     ->label('Add Items to Store')
                     ->schema([
                         Select::make('inventory_id')
-                            ->relationship('inventory', 'name', function ($query) {
-                                $query->where('organization_id', auth()->user()->organization_id);
-                            })
+                            ->relationship('inventory', 'name')
                             ->required()
                             ->reactive()
+                            ->preload()
+                            ->searchable()
                             ->afterStateUpdated(function ($state, callable $set, $get) {
                                 // Set the unit dynamically based on selected inventory for the specific repeater item
                                 $unit = $state ? \App\Models\Inventory::find($state)?->unit : '';
@@ -57,7 +58,10 @@ class StockResource extends Resource
                             ->reactive(),
                         Hidden::make('unit'), // Hidden field to store the unit per repeater item
                         TextInput::make('price')
+                            ->label('Price Per Quantity')
                             ->numeric()
+                            ->prefix('₹')
+                            ->suffix('/-')
                             ->required()
                             ->default(0),
                     ])
@@ -66,9 +70,7 @@ class StockResource extends Resource
                     ->required()
                     ->visibleOn('create'),
                 Select::make('inventory_id')
-                    ->relationship('inventory', 'name', function ($query) {
-                        $query->where('organization_id', auth()->user()->organization_id);
-                    })
+                    ->relationship('supplier', 'name', fn($query) => $query->where('type', 'shop'))
                     ->required()
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
@@ -86,6 +88,9 @@ class StockResource extends Resource
                 Hidden::make('unit')
                     ->visibleOn('edit'), // Hidden field to store the unit
                 TextInput::make('price')
+                    ->label('Price Per Quantity')
+                    ->prefix('₹')
+                    ->suffix('/-')
                     ->numeric()
                     ->required()
                     ->default(0)
@@ -132,7 +137,7 @@ class StockResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Action::make('move')
                     ->label('Move Stock')
-                    ->icon('heroicon-o-arrow-right-end-on-rectangle') // You can use any icon
+                    ->icon('heroicon-s-arrow-right-circle') // You can use any icon
                     ->url(fn($record) => StockResource::getUrl('move', ['record' => $record->id]))
                     ->color('success')
 

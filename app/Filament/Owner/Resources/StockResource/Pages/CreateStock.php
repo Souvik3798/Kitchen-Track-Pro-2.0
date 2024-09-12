@@ -31,7 +31,8 @@ class CreateStock extends CreateRecord
 
                 $done = $existingStock->update([
                     'store_quantity' => $existingStock->store_quantity + $stockData['store_quantity'],
-                    'price' => $stockData['price'],
+                    'price' => ($stockData['price'] != 0) ? $stockData['price'] : $existingStock->price,
+
                 ]);
 
                 if ($done) {
@@ -43,7 +44,7 @@ class CreateStock extends CreateRecord
                         'source' => 'purchase',
                         'destination' => 'store',
                         'quantity' => $stockData['store_quantity'],
-                        'price' => $stockData['price']
+                        'price' => ($stockData['price'] != 0) ? $stockData['price'] : $existingStock->price,
                     ]);
                 }
             } else {
