@@ -8,6 +8,7 @@ use App\Models\ShopOrder;
 use App\Models\ShopOrderDetails;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Cart extends Page

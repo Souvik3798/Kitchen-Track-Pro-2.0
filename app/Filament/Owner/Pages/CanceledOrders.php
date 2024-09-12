@@ -6,6 +6,7 @@ use App\Models\OrderTracking;
 use App\Models\ShopOrder;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 
 class CanceledOrders extends Page
 {

@@ -4,6 +4,7 @@ namespace App\Filament\Owner\Pages;
 
 use App\Models\ShopOrder;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 
 class OrderTrackingHistory extends Page
 {

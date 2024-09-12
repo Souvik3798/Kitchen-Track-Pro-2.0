@@ -7,6 +7,7 @@ use App\Models\ShopOrder;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ManageOrders extends Page
 {
