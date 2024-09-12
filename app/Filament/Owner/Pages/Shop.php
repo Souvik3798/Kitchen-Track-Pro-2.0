@@ -165,7 +165,7 @@ class Shop extends Page
 
     public static function canView(): bool
     {
-        return auth()->check() && in_array(auth()->user()->role, ['owner', 'store_keeper']);
+        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
     }
 
     protected function getHeaderActions(): array
