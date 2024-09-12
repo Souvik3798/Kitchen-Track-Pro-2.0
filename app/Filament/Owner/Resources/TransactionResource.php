@@ -72,7 +72,7 @@ class TransactionResource extends Resource
                     })
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('cost')
+                Tables\Columns\TextColumn::make('price')
                     ->label('Price')
                     ->default(function ($record) {
                         $price = $record->price * $record->quantity;
