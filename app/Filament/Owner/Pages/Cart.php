@@ -156,4 +156,9 @@ class Cart extends Page
         }
         $this->mount();
     }
+
+    public static function canAccess(): bool
+    {
+        return Auth::check() && (Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper');
+    }
 }

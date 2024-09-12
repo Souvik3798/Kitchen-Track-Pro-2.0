@@ -30,4 +30,8 @@ class OrderTrackingHistory extends Page
             $this->trackings = collect();
         }
     }
+    public static function canAccess(): bool
+    {
+        return Auth::check() && (Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper');
+    }
 }

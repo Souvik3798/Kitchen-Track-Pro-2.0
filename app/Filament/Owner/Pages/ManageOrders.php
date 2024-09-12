@@ -77,4 +77,9 @@ class ManageOrders extends Page
 
         $this->updateOrders(); // Reload the orders after cancellation
     }
+
+    public static function canAccess(): bool
+    {
+        return Auth::check() && (Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper');
+    }
 }

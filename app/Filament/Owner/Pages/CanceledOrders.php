@@ -90,4 +90,9 @@ class CanceledOrders extends Page
         // Refresh the list of orders after updating
         $this->mount();
     }
+
+    public static function canAccess(): bool
+    {
+        return Auth::check() && (Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper');
+    }
 }
