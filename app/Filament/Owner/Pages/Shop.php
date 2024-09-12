@@ -165,21 +165,21 @@ class Shop extends Page
 
     public static function canViewAny(): bool
     {
-        return Auth::check() && Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
+        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
     }
 
     public static function canCreate(): bool
     {
-        return Auth::check() && Auth::user()->role === 'owner'  || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
+        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
     }
 
     public static function canEdit(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
+        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
     }
 
     public static function canDelete(Model $record): bool
     {
-        return Auth::check() && Auth::user()->role === 'owner' || Auth::user()->role === 'store_keeper'; // Replace 1 with the ID of the user who should have access
+        return Auth::check() && in_array(Auth::user()->role, ['owner', 'store_keeper']);
     }
 }
